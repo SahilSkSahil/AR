@@ -17,7 +17,7 @@
     z-index: 1;
   }
 
-  #biriyani, #smoke {
+  #biriyani, .steam {
     position: fixed;
     left: 50%;
     transform: translateX(-50%);
@@ -31,40 +31,53 @@
     animation: floatBiryani 2s ease-in-out infinite alternate;
   }
 
-  #smoke {
+  /* Create multiple steam layers */
+  .steam {
     bottom: 35%;
-    width: 70%;
-    animation: floatSmoke 3s ease-in-out infinite alternate, fadeSmoke 3s ease-in-out infinite alternate;
+    width: 60%;
+    opacity: 0.3;
+    filter: blur(8px);
+    animation: rise 4s ease-in-out infinite, fade 4s ease-in-out infinite;
   }
 
-  /* Smooth floating animations */
+  .steam:nth-child(1) { animation-delay: 0s; left: 48%; width: 65%; opacity: 0.25; }
+  .steam:nth-child(2) { animation-delay: 1s; left: 52%; width: 55%; opacity: 0.35; }
+  .steam:nth-child(3) { animation-delay: 2s; left: 50%; width: 60%; opacity: 0.3; }
+
   @keyframes floatBiryani {
     0% { transform: translateX(-50%) translateY(0); }
     100% { transform: translateX(-50%) translateY(-10px); }
   }
 
-  @keyframes floatSmoke {
-    0% { transform: translateX(-50%) translateY(0); }
-    100% { transform: translateX(-50%) translateY(-20px); }
+  @keyframes rise {
+    0% { transform: translateX(-50%) translateY(0) scale(1); }
+    50% { transform: translateX(-50%) translateY(-25px) scale(1.05); }
+    100% { transform: translateX(-50%) translateY(-50px) scale(1.1); }
   }
 
-  @keyframes fadeSmoke {
-    0% { opacity: 0.5; }
-    100% { opacity: 0.8; }
+  @keyframes fade {
+    0% { opacity: 0.2; }
+    50% { opacity: 0.4; }
+    100% { opacity: 0; }
   }
+
 </style>
 </head>
 <body>
 
 <video id="video" autoplay playsinline></video>
 <img id="biriyani" src="./assets/biryani.png" alt="Biriyani">
-<img id="smoke" src="./assets/smoke.png" alt="Smoke">
+
+<!-- Multiple steam layers for realistic effect -->
+<img class="steam" src="./assets/smoke.png" alt="Steam">
+<img class="steam" src="./assets/smoke.png" alt="Steam">
+<img class="steam" src="./assets/smoke.png" alt="Steam">
 
 <script>
 async function startCamera() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: { exact: "environment" } },
+      video: { facingMode: { exact: "environment" } }, // back camera
       audio: false
     });
     document.getElementById('video').srcObject = stream;
