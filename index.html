@@ -79,16 +79,16 @@ img.biryani::after {
   left: 50%;
   transform: translateX(-50%);
   width: 70%;
-  opacity: 0.35; /* more visible */
+  opacity: 0.35; /* visible */
   z-index: 3;
   pointer-events: none;
   filter: blur(4px) saturate(1.2) brightness(1.8); /* vibrant */
 }
 
-/* Animation for each smoke layer - slower */
-.smoke:nth-child(1) { animation: rise1 12s ease-in-out infinite; }
-.smoke:nth-child(2) { animation: rise2 14s ease-in-out infinite; opacity: 0.3; width: 65%; }
-.smoke:nth-child(3) { animation: rise3 16s ease-in-out infinite; opacity: 0.25; width: 60%; }
+/* Faster animation for smoke layers */
+.smoke:nth-child(1) { animation: rise1 8s ease-in-out infinite; }
+.smoke:nth-child(2) { animation: rise2 10s ease-in-out infinite; opacity: 0.3; width: 65%; }
+.smoke:nth-child(3) { animation: rise3 12s ease-in-out infinite; opacity: 0.25; width: 60%; }
 
 /* Biriyani floating */
 @keyframes float {
@@ -96,7 +96,7 @@ img.biryani::after {
   100% { transform: translateY(-10px); }
 }
 
-/* Dynamic steam animations - slower and smooth */
+/* Dynamic steam animations - faster */
 @keyframes rise1 {
   0% { transform: translate(-50%,0) scale(1); opacity: 0.35; }
   50% { transform: translate(-48%,-30px) scale(1.05); opacity: 0.25; }
