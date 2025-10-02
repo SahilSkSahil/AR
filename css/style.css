@@ -1,0 +1,31 @@
+/* Fullscreen overlay on top of camera */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background: #000;
+  overflow: hidden;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+  color: #fff;
+  z-index: 999;
+}
+
+.overlay h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.overlay p {
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
