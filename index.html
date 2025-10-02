@@ -4,63 +4,52 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Biriyani AR Demo</title>
-
-<!-- A-Frame -->
-<script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-
 <style>
-body { margin: 0; overflow: hidden; background: #000; }
-.overlay-text {
-  position: absolute;
-  top: 10px;
-  width: 100%;
-  text-align: center;
-  color: #ffcc66;
-  text-shadow: 0 0 10px rgba(255,204,102,0.7);
-  font-family: sans-serif;
-  z-index: 2;
-}
+  body, html { margin: 0; padding: 0; overflow: hidden; background: #000; }
+  video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: 1;
+  }
+  #biriyani, #smoke {
+    position: fixed;
+    z-index: 2;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+  #biriyani { bottom: 20%; width: 60%; }
+  #smoke { bottom: 35%; width: 70%; animation: float 2s ease-in-out infinite alternate, fade 2s ease-in-out infinite alternate; }
+  @keyframes float { transform: translateX(-50%) translateY(-5px); }
+  @keyframes fade { opacity: 0.5; }
 </style>
 </head>
 <body>
 
-<div class="overlay-text">
-  <h1>Delicious Biriyani 🍛</h1>
-  <p>Camera view with floating biryani + smoke</p>
-</div>
+<video id="video" autoplay playsinline></video>
+<img id="biriyani" src="./assets/biryani.png" alt="Biriyani">
+<img id="smoke" src="./assets/smoke.png" alt="Smoke">
 
-<a-scene
-  vr-mode-ui="enabled: false"
-  embedded
-  device-orientation-permission-ui="enabled: true">
-
-  <!-- Back camera video -->
-  <a-camera>
-    <a-entity 
-      geometry="primitive: plane; height: 1; width: 1"
-      material="src: #video-feed"
-      position="0 0 -1">
-    </a-entity>
-  </a-camera>
-
-  <!-- Biriyani base -->
-  <a-image
-    src="./assets/biryani.png"
-    position="0 0 -1.5"
-    scale="0.6 0.6 0.6"
-    animation="property: position; dir: alternate; to: 0 0.05 -1.5; dur: 1500; loop: true">
-  </a-image>
-
-  <!-- Smoke -->
-  <a-image
-    src="./assets/smoke.png"
-    position="0 0.3 -1.5"
-    scale="0.7 0.7 0.7"
-    animation="property: position; dir: alternate; to: 0 0.5 -1.5; dur: 2000; loop: true"
-    animation__fade="property: opacity; dir: alternate; to: 0.5; dur: 2000; loop: true">
-  </a-image>
-
-</a-scene>
+<script>
+async function startCamera() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: { exact: "environment" } }, // back camera
+      audio: false
+    });
+    const video = document.getElementById('video');
+    video.srcObject = stream;
+  } catch (err) {
+    alert("Could not access back camera. Error: " + err);
+    console.error(err);
+  }
+}
+startCamera();
+</script>
 
 </body>
 </html>
