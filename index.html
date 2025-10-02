@@ -3,136 +3,78 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Delicious Biriyani 🍛</title>
+<title>Biriyani AR 🍛</title>
+
+<!-- A-Frame & MindAR -->
+<script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.5/dist/mindar-image-aframe.prod.js"></script>
+
+<!-- CSS for glow and styling -->
 <link rel="stylesheet" href="css/style.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
 body {
   margin: 0;
-  font-family: 'Poppins', sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: #000; /* Black background */
+  background: #000; /* Black background for AR overlay */
   overflow: hidden;
+  font-family: 'Poppins', sans-serif;
 }
 
-h1 {
-  color: #ffcc66;
-  font-size: 2rem;
-  margin-bottom: 20px;
+/* Optional overlay instructions */
+.overlay {
+  position: absolute;
+  top: 20px;
+  width: 100%;
   text-align: center;
-  text-shadow: 0 0 20px rgba(255,204,102,0.7);
-}
-
-.container {
-  position: relative;
-  display: inline-block;
-}
-
-/* Plate shadow */
-.plate-shadow {
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%;
-  height: 20px;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 80%);
-  border-radius: 50%;
-  filter: blur(8px);
-  z-index: 1;
-}
-
-/* Main biriyani image */
-img.biryani {
-  max-width: 90%;
-  height: auto;
-  border-radius: 20px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
-  animation: float 4s ease-in-out infinite alternate;
-  z-index: 2;
-  position: relative;
-}
-
-/* Glow effect */
-img.biryani::after {
-  content: '';
-  position: absolute;
-  top: -10%;
-  left: -10%;
-  width: 120%;
-  height: 120%;
-  border-radius: 20px;
-  box-shadow: 0 0 80px rgba(255,200,150,0.6);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* Smoke layers */
-.smoke {
-  position: absolute;
-  top: -40px; /* above biriyani */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 70%;
-  opacity: 0.35;
-  z-index: 3;
-  pointer-events: none;
-  filter: blur(4px) saturate(1.2) brightness(1.8);
-}
-
-/* Faster swaying smoke animations */
-.smoke:nth-child(1) { animation: riseSway1 8s ease-in-out infinite; }
-.smoke:nth-child(2) { animation: riseSway2 10s ease-in-out infinite; opacity: 0.3; width: 65%; }
-.smoke:nth-child(3) { animation: riseSway3 12s ease-in-out infinite; opacity: 0.25; width: 60%; }
-
-/* Biriyani floating */
-@keyframes float {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-10px); }
-}
-
-/* Dynamic swaying steam animations */
-@keyframes riseSway1 {
-  0% { transform: translate(-50%,0) scale(1); opacity: 0.35; }
-  25% { transform: translate(-49%,-15px) scale(1.02); opacity: 0.3; }
-  50% { transform: translate(-48%,-30px) scale(1.05); opacity: 0.25; }
-  75% { transform: translate(-49%,-45px) scale(1.08); opacity: 0.15; }
-  100% { transform: translate(-50%,-60px) scale(1.1); opacity: 0; }
-}
-@keyframes riseSway2 {
-  0% { transform: translate(-50%,0) scale(1); opacity: 0.3; }
-  25% { transform: translate(-51%,-17px) scale(1.01); opacity: 0.25; }
-  50% { transform: translate(-52%,-35px) scale(1.03); opacity: 0.2; }
-  75% { transform: translate(-51%,-50px) scale(1.05); opacity: 0.12; }
-  100% { transform: translate(-50%,-65px) scale(1.08); opacity: 0; }
-}
-@keyframes riseSway3 {
-  0% { transform: translate(-50%,0) scale(1); opacity: 0.25; }
-  25% { transform: translate(-49.5%,-12px) scale(1.01); opacity: 0.2; }
-  50% { transform: translate(-51%,-25px) scale(1.02); opacity: 0.15; }
-  75% { transform: translate(-50.5%,-40px) scale(1.03); opacity: 0.1; }
-  100% { transform: translate(-50%,-55px) scale(1.05); opacity: 0; }
+  color: #ffcc66;
+  z-index: 10;
+  text-shadow: 0 0 10px rgba(255,204,102,0.7);
+  font-size: 1.2rem;
 }
 </style>
 </head>
 <body>
-<h1>Delicious Biriyani 🍛</h1>
-<div class="container">
-  <!-- Plate shadow -->
-  <div class="plate-shadow"></div>
 
-  <!-- Multiple swaying smoke layers -->
-  <img src="./assets/smoke.png" class="smoke" alt="Steam">
-  <img src="./assets/smoke.png" class="smoke" alt="Steam">
-  <img src="./assets/smoke.png" class="smoke" alt="Steam">
-
-  <!-- Main biriyani -->
-  <img src="./assets/biryani.png" class="biriyani" alt="Biriyani">
+<div class="overlay">
+  <h1>Delicious Biriyani 🍛</h1>
+  <p>Point your camera at the marker to see the AR dish!</p>
 </div>
+
+<a-scene
+  mindar-image="imageTargetSrc: ./assets/marker.mind;"
+  color-space="sRGB"
+  renderer="colorManagement: true; physicallyCorrectLights"
+  vr-mode-ui="enabled: false"
+  device-orientation-permission-ui="enabled: true">
+
+  <a-camera position="0 0 0" look-controls="enabled: true"></a-camera>
+
+  <!-- Target anchor -->
+  <a-entity mindar-image-target="targetIndex: 0">
+
+    <!-- Plate shadow -->
+    <a-plane position="0 -0.1 0" rotation="-90 0 0" width="1" height="1"
+             color="#111" opacity="0.5" radius="0.5"></a-plane>
+
+    <!-- Biriyani -->
+    <a-image src="./assets/biryani.png" position="0 0 0" scale="0.6 0.6 0.6">
+      <a-animation attribute="position" from="0 0 0" to="0 0.05 0" direction="alternate" dur="2000" repeat="indefinite"></a-animation>
+    </a-image>
+
+    <!-- Smoke layers -->
+    <a-image src="./assets/smoke.png" position="0 0.3 0" scale="0.6 0.6 0.6"
+             animation="property: position; from: 0 0.3 0; to: 0 0.5 0; dir: alternate; dur: 8000; loop: true"
+             animation__fade="property: opacity; from:0.35; to:0; dir: alternate; dur: 8000; loop: true"></a-image>
+
+    <a-image src="./assets/smoke.png" position="0 0.35 0" scale="0.55 0.55 0.55"
+             animation="property: position; from: 0 0.35 0; to: 0 0.55 0; dir: alternate; dur: 10000; loop: true"
+             animation__fade="property: opacity; from:0.3; to:0; dir: alternate; dur: 10000; loop: true"></a-image>
+
+    <a-image src="./assets/smoke.png" position="0 0.4 0" scale="0.5 0.5 0.5"
+             animation="property: position; from: 0 0.4 0; to: 0 0.6 0; dir: alternate; dur: 12000; loop: true"
+             animation__fade="property: opacity; from:0.25; to:0; dir: alternate; dur: 12000; loop: true"></a-image>
+
+  </a-entity>
+</a-scene>
+
 </body>
 </html>
