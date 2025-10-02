@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Biriyani AR</title>
+<title>Biriyani AR Demo</title>
 
-<!-- A-Frame + MindAR -->
+<!-- A-Frame -->
 <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.5/dist/mindar-image-aframe.prod.js"></script>
 
 <style>
 body { margin: 0; overflow: hidden; background: #000; }
@@ -27,41 +26,40 @@ body { margin: 0; overflow: hidden; background: #000; }
 
 <div class="overlay-text">
   <h1>Delicious Biriyani 🍛</h1>
-  <p>Point your camera at the QR/marker to see it in AR</p>
+  <p>Camera view with floating biryani + smoke</p>
 </div>
 
 <a-scene
-  mindar-image="imageTargetSrc: ./assets/marker.mind;"
-  mindar-image-camera="facingMode: environment"  <!-- BACK camera -->
-  color-space="sRGB"
-  renderer="colorManagement: true; physicallyCorrectLights"
   vr-mode-ui="enabled: false"
+  embedded
   device-orientation-permission-ui="enabled: true">
 
-  <a-camera position="0 0 0"></a-camera>
+  <!-- Back camera video -->
+  <a-camera>
+    <a-entity 
+      geometry="primitive: plane; height: 1; width: 1"
+      material="src: #video-feed"
+      position="0 0 -1">
+    </a-entity>
+  </a-camera>
 
-  <!-- Marker target -->
-  <a-entity mindar-image-target="targetIndex: 0">
+  <!-- Biriyani base -->
+  <a-image
+    src="./assets/biryani.png"
+    position="0 0 -1.5"
+    scale="0.6 0.6 0.6"
+    animation="property: position; dir: alternate; to: 0 0.05 -1.5; dur: 1500; loop: true">
+  </a-image>
 
-    <!-- Biriyani base image -->
-    <a-image
-      src="./assets/biryani.png"
-      position="0 0 0"
-      rotation="0 0 0"
-      scale="0.6 0.6 0.6"
-      animation="property: position; dir: alternate; to: 0 0.05 0; dur: 1500; loop: true">
-    </a-image>
+  <!-- Smoke -->
+  <a-image
+    src="./assets/smoke.png"
+    position="0 0.3 -1.5"
+    scale="0.7 0.7 0.7"
+    animation="property: position; dir: alternate; to: 0 0.5 -1.5; dur: 2000; loop: true"
+    animation__fade="property: opacity; dir: alternate; to: 0.5; dur: 2000; loop: true">
+  </a-image>
 
-    <!-- Smoke layer -->
-    <a-image
-      src="./assets/smoke.png"
-      position="0 0.3 0"
-      scale="0.6 0.6 0.6"
-      animation="property: position; dir: alternate; to: 0 0.5 0; dur: 2000; loop: true"
-      animation__fade="property: opacity; dir: alternate; to: 0.5; dur: 2000; loop: true">
-    </a-image>
-
-  </a-entity>
 </a-scene>
 
 </body>
