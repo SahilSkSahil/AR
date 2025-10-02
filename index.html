@@ -16,16 +16,16 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: linear-gradient(135deg, #fdf6e3, #f5d0a9);
+  background: #000;
   overflow: hidden;
 }
 
 h1 {
-  color: #b85c38;
+  color: #ffcc66;
   font-size: 2rem;
   margin-bottom: 20px;
   text-align: center;
-  text-shadow: 0 0 10px rgba(184,92,56,0.6);
+  text-shadow: 0 0 20px rgba(255,204,102,0.7);
 }
 
 .container {
@@ -33,12 +33,26 @@ h1 {
   display: inline-block;
 }
 
+/* Plate shadow */
+.plate-shadow {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 20px;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 80%);
+  border-radius: 50%;
+  filter: blur(8px);
+  z-index: 1;
+}
+
 /* Main biriyani image */
 img.biryani {
   max-width: 90%;
   height: auto;
   border-radius: 20px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.6);
   animation: float 4s ease-in-out infinite alternate;
   z-index: 2;
   position: relative;
@@ -53,7 +67,7 @@ img.biryani::after {
   width: 120%;
   height: 120%;
   border-radius: 20px;
-  box-shadow: 0 0 60px rgba(255,200,150,0.5);
+  box-shadow: 0 0 80px rgba(255,200,150,0.6);
   pointer-events: none;
   z-index: -1;
 }
@@ -68,7 +82,7 @@ img.biryani::after {
   opacity: 0.25;
   z-index: 3;
   pointer-events: none;
-  filter: blur(4px) saturate(0.4) brightness(1.2);
+  filter: blur(4px) saturate(0.4) brightness(1.5);
 }
 
 /* Animation for each smoke layer */
@@ -104,11 +118,14 @@ img.biryani::after {
 <body>
 <h1>Delicious Biriyani 🍛</h1>
 <div class="container">
+  <!-- Plate shadow -->
+  <div class="plate-shadow"></div>
+
   <!-- Multiple smoke layers -->
   <img src="./assets/smoke.png" class="smoke" alt="Steam">
   <img src="./assets/smoke.png" class="smoke" alt="Steam">
   <img src="./assets/smoke.png" class="smoke" alt="Steam">
-  
+
   <!-- Main biriyani -->
   <img src="./assets/biryani.png" class="biriyani" alt="Biriyani">
 </div>
