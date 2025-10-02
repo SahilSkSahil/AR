@@ -3,44 +3,65 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Camera Test</title>
+<title>Biriyani AR</title>
 
-<!-- A-Frame -->
+<!-- A-Frame + MindAR -->
 <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-<!-- MindAR -->
 <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.1.5/dist/mindar-image-aframe.prod.js"></script>
 
 <style>
-body {
-  margin: 0;
-  background: #000;
-  overflow: hidden;
-}
-.overlay {
+body { margin: 0; overflow: hidden; background: #000; }
+.overlay-text {
   position: absolute;
-  top: 20px;
+  top: 10px;
   width: 100%;
   text-align: center;
-  color: #fff;
-  z-index: 10;
+  color: #ffcc66;
+  text-shadow: 0 0 10px rgba(255,204,102,0.7);
   font-family: sans-serif;
+  z-index: 2;
 }
 </style>
 </head>
 <body>
 
-<div class="overlay">
-  <h1>Camera Test</h1>
-  <p>Allow camera access to see the feed below</p>
+<div class="overlay-text">
+  <h1>Delicious Biriyani 🍛</h1>
+  <p>Point your camera at the QR/marker to see it in AR</p>
 </div>
 
 <a-scene
-  mindar-image="imageTargetSrc: ./assets/marker.mind;" 
-  vr-mode-ui="enabled: false" 
+  mindar-image="imageTargetSrc: ./assets/marker.mind;"
+  mindar-image-camera="facingMode: environment"  <!-- BACK camera -->
+  color-space="sRGB"
+  renderer="colorManagement: true; physicallyCorrectLights"
+  vr-mode-ui="enabled: false"
   device-orientation-permission-ui="enabled: true">
 
-  <a-camera position="0 0 0" look-controls="enabled: true"></a-camera>
+  <a-camera position="0 0 0"></a-camera>
 
+  <!-- Marker target -->
+  <a-entity mindar-image-target="targetIndex: 0">
+
+    <!-- Biriyani base image -->
+    <a-image
+      src="./assets/biryani.png"
+      position="0 0 0"
+      rotation="0 0 0"
+      scale="0.6 0.6 0.6"
+      animation="property: position; dir: alternate; to: 0 0.05 0; dur: 1500; loop: true">
+    </a-image>
+
+    <!-- Smoke layer -->
+    <a-image
+      src="./assets/smoke.png"
+      position="0 0.3 0"
+      scale="0.6 0.6 0.6"
+      animation="property: position; dir: alternate; to: 0 0.5 0; dur: 2000; loop: true"
+      animation__fade="property: opacity; dir: alternate; to: 0.5; dur: 2000; loop: true">
+    </a-image>
+
+  </a-entity>
 </a-scene>
 
 </body>
